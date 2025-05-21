@@ -1,0 +1,54 @@
+<div class="bg-blue-400 min-h-screen flex flex-col pt-3 gap-6">
+
+  <h1 class="mx-auto text-4xl text-blue-900 font-bold">Task Manager App</h1>
+
+  <div class="flex items-center flex-col gap-3 justify-center">
+    <div class="flex justify-center gap-4 mb-4">
+      <button 
+        (click)="setFilter('all')" 
+        [class.font-bold]="(filter$ | async) === 'all'" 
+        class="px-3 py-1 border rounded cursor-pointer">
+        All
+      </button>
+      <button 
+        (click)="setFilter('completed')" 
+        [class.font-bold]="(filter$ | async) === 'completed'" 
+        class="px-3 py-1 border rounded cursor-pointer">
+        Completed
+      </button>
+    </div>
+
+    
+
+    <input 
+      [(ngModel)]="todoTitle" 
+      type="text" 
+      class="text-lg shadow-lg font-abhaya rounded-lg border focus:border-gold w-1/2 bg-white focus:outline-none border-solid border-[#D6D6D6] p-4 text-textcolor h-12" 
+      placeholder="Task Title"
+    >
+
+    <textarea 
+      [(ngModel)]="description" 
+      type="text" 
+      class="text-lg shadow-lg font-abhaya rounded-lg border focus:border-gold w-1/2 bg-white focus:outline-none border-solid border-[#D6D6D6] p-4 text-textcolor" 
+      placeholder="description"
+    ></textarea>
+
+    <button 
+      (click)="addOrUpdateTask()" 
+      class="bg-blue-600 text-white px-4 py-2 rounded">
+      {{ editMode ? 'Update' : 'Add' }}
+    </button>
+  </div>
+
+  <div class="flex flex-col gap-4 items-center">
+    <app-task
+      *ngFor="let task of filteredTasks$ | async"
+      [task]="task"
+      (edit)="startEdit(task)"
+      (delete)="deleteTask(task.id)"
+      (toggleComplete)="updateTask($event)">
+    </app-task>
+  </div>
+
+</div>
